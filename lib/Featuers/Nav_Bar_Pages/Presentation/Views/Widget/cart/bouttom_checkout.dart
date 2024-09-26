@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:storeapp/Core/Utils/app_styles.dart';
+import 'package:storeapp/Core/Widget/custom_botton.dart';
+import 'package:storeapp/providers/cart_provider.dart';
+import 'package:storeapp/providers/product_provider.dart';
+
+class BouttomCheckout extends StatelessWidget {
+  const BouttomCheckout({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Total (${cartProvider.getCartItems.length} product /${cartProvider.getQty()} items) ',
+              style: AppStyles.styleMedium16,
+            ),
+            Text(
+              '${cartProvider.totalAmount(productProvider: productProvider)}\$',
+              style: AppStyles.styleMedium16,
+            ),
+          ],
+        ),
+        CustomBotton(width: 120, onPressed: () {}, text: 'Checkout')
+      ],
+    );
+  }
+}
