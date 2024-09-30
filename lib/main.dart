@@ -77,6 +77,7 @@ class SmartStore extends StatelessWidget {
             ForgotPasswordView.routeName: (context) =>
                 const ForgotPasswordView(),
             SearchView.routeName: (context) => const SearchView(),
+            NavBar.routeName: (context) => const NavBar(),
           },
         );
       }),

@@ -10,6 +10,7 @@ import 'package:storeapp/providers/cart_provider.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
+  static const routeName = 'NavBar';
 
   @override
   State<NavBar> createState() => _NavBarState();

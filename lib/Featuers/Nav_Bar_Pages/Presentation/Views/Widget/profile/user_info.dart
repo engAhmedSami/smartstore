@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storeapp/Core/Helper_Functions/get_user.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
 
 class UserInfolisttile extends StatelessWidget {
@@ -14,23 +15,23 @@ class UserInfolisttile extends StatelessWidget {
         height: 60,
         width: 60,
         decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).cardColor,
-            border: Border.all(
-              color: Theme.of(context).colorScheme.surface,
-              width: 2,
-            ),
-            image: const DecorationImage(
-                image: NetworkImage(
-              'https://i.stack.imgur.com/34AD2.jpg',
-            ))),
+          shape: BoxShape.circle,
+          color: Theme.of(context).cardColor,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.surface,
+            width: 2,
+          ),
+          image: const DecorationImage(
+            image: NetworkImage(''),
+          ),
+        ),
       ),
-      title: const Text(
-        'Ahmed Sami',
+      title: Text(
+        getUser().name,
         style: AppStyles.styleMedium20,
       ),
-      subtitle: const Text(
-        'w8Z6H@example.com',
+      subtitle: Text(
+        getUser().email,
         style: AppStyles.styleRegular16,
       ),
     );

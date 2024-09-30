@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storeapp/Core/Helper_Functions/failuer_top_snak_bar.dart';
 import 'package:storeapp/Core/Helper_Functions/scccess_top_snak_bar.dart';
 import 'package:storeapp/Core/Utils/custom_progrss_hud.dart';
-import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/search/search_view.dart';
 import 'package:storeapp/Featuers/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/signin_view.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/widget/signup_view_body.dart';
 
 class SigneupViewBodyBlockConsumer extends StatelessWidget {
@@ -17,10 +17,10 @@ class SigneupViewBodyBlockConsumer extends StatelessWidget {
     return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state is SignupSuccess) {
-          succesTopSnackBar(context, 'Loged in successfully');
+          succesTopSnackBar(context, 'Account created successfully');
           Navigator.pushNamed(
             context,
-            SearchView.routeName,
+            SignInView.routeName,
           );
         }
         if (state is SignupFailure) {

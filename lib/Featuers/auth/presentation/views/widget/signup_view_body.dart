@@ -251,6 +251,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                                 email,
                                 password,
                                 userName,
+                                pickImage!.path,
                               );
                         } else {
                           setState(
