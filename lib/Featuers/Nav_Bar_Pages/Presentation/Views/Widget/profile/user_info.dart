@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storeapp/Core/Helper_Functions/get_user.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
 
 class UserInfolisttile extends StatelessWidget {
@@ -25,12 +26,12 @@ class UserInfolisttile extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        ' getUser().name',
+      title: Text(
+        getUser().name,
         style: AppStyles.styleMedium20,
       ),
-      subtitle: const Text(
-        'getUser().email',
+      subtitle: Text(
+        getUser().email,
         style: AppStyles.styleRegular16,
       ),
     );
