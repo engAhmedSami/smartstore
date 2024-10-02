@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/orders.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/viewed_recently.dart';
@@ -11,6 +12,7 @@ class General extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,12 +23,14 @@ class General extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        GeneralCustomListTile(
-            onTap: () async {
-              await Navigator.pushNamed(context, Orders.routeName);
-            },
-            image: Assets.users_imagesBagOrderSvg,
-            title: "All Orders"),
+        user == null
+            ? const SizedBox()
+            : GeneralCustomListTile(
+                onTap: () async {
+                  await Navigator.pushNamed(context, Orders.routeName);
+                },
+                image: Assets.users_imagesBagOrderSvg,
+                title: "All Orders"),
         GeneralCustomListTile(
             onTap: () async {
               await Navigator.pushNamed(context, Wishlist.routeName);
@@ -39,10 +43,12 @@ class General extends StatelessWidget {
             },
             image: Assets.users_imagesProfileRecent,
             title: "Viewed recently"),
-        GeneralCustomListTile(
-            onTap: () {},
-            image: Assets.users_imagesProfileAddress,
-            title: "Address"),
+        user == null
+            ? const SizedBox()
+            : GeneralCustomListTile(
+                onTap: () {},
+                image: Assets.users_imagesProfileAddress,
+                title: "Address"),
       ],
     );
   }

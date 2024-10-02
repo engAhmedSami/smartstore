@@ -164,21 +164,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
-  void initState() {
-    super.initState();
-    // Add the post-frame callback to ensure the context is used safely
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Perform any actions that need the context here
-      if (user == null) {
-        // Example action: Show a prompt if user is not logged in
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please log in to access all features')),
-        );
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -189,11 +174,15 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Visibility(
-              visible: false,
-              child: Text('Please Login to have ultimate access'),
-            ),
-            const UserInfolisttile(),
+            user == null
+                ? const Visibility(
+                    visible: true,
+                    child: Text(
+                      'Please Login to have ultimate access',
+                      style: AppStyles.styleMedium18,
+                    ),
+                  )
+                : const UserInfolisttile(),
             const SizedBox(height: 16),
             const General(),
             const SizedBox(height: 16),
