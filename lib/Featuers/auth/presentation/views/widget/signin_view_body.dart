@@ -5,6 +5,7 @@ import 'package:storeapp/Core/Utils/app_styles.dart';
 import 'package:storeapp/Core/Utils/assets.dart';
 import 'package:storeapp/Core/Widget/custom_botton.dart';
 import 'package:storeapp/Core/Widget/custom_text_field.dart';
+import 'package:storeapp/Core/Widget/nav_bar.dart';
 import 'package:storeapp/Featuers/auth/presentation/cubits/signin_cubit/signin_cubit.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/forgot_password_view.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/widget/dont_have_an_account_widget.dart';
@@ -175,7 +176,9 @@ class _SignInViewBodyState extends State<SignInViewBody> {
                       height: 16,
                     ),
                     SocialLoginButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, NavBar.routeName);
+                      },
                       image: Assets.users_imagesGuest,
                       tital: 'Sign in as Guest',
                     ),

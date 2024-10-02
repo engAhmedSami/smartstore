@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:storeapp/Core/Utils/show_dialog.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/profile/general.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/profile/general_custom_list_tile.dart';
-import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/profile/user_info.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
 import 'package:storeapp/Core/Utils/assets.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/signin_view.dart';
+import 'package:storeapp/Featuers/auth/user_info/persentation/views/widget/user_info_list_tile.dart';
 import 'package:storeapp/providers/theme_provider.dart';
 
 class ProfileViewBody extends StatefulWidget {
@@ -39,7 +39,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       style: AppStyles.styleMedium18,
                     ),
                   )
-                : const UserInfolisttile(),
+                : UserInfoListTile(uid: user!.uid),
             const SizedBox(height: 16),
             const General(),
             const SizedBox(height: 16),
