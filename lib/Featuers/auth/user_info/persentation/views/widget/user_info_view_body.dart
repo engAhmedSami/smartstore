@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:storeapp/Core/Helper_Functions/failuer_top_snak_bar.dart';
 import 'package:storeapp/Core/Widget/custom_botton.dart';
-import 'package:storeapp/Core/Widget/custom_text_field.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
 import 'package:storeapp/Featuers/auth/user_info/persentation/save_info_cubit/profile_cubit.dart';
 import 'package:storeapp/Featuers/auth/user_info/persentation/views/show_snck_bar.dart';
@@ -52,7 +52,7 @@ class _UserInfoViewBodyState extends State<UserInfoViewBody> {
                       ? const CircleAvatar(
                           radius: 70,
                           child: Icon(
-                            Icons.account_circle,
+                            IconlyBold.profile,
                             size: 70,
                           ),
                         )
@@ -61,27 +61,27 @@ class _UserInfoViewBodyState extends State<UserInfoViewBody> {
                           backgroundImage: FileImage(image!),
                         ),
                 ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  prefixIcon: const Icon(Icons.person),
-                  textInputType: TextInputType.name,
-                  controller: nameController,
-                  hintText: 'Enter Your Name',
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  prefixIcon: const Icon(Icons.email),
-                  textInputType: TextInputType.emailAddress,
-                  controller: emailController,
-                  hintText: 'Enter Your Email',
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  prefixIcon: const Icon(Icons.info),
-                  textInputType: TextInputType.name,
-                  controller: bioController,
-                  hintText: 'Enter Your Bio',
-                ),
+                // const SizedBox(height: 20),
+                // CustomTextFormField(
+                //   prefixIcon: const Icon(Icons.person),
+                //   textInputType: TextInputType.name,
+                //   controller: nameController,
+                //   hintText: 'Enter Your Name',
+                // ),
+                // const SizedBox(height: 20),
+                // CustomTextFormField(
+                //   prefixIcon: const Icon(Icons.email),
+                //   textInputType: TextInputType.emailAddress,
+                //   controller: emailController,
+                //   hintText: 'Enter Your Email',
+                // ),
+                // const SizedBox(height: 20),
+                // CustomTextFormField(
+                //   prefixIcon: const Icon(Icons.info),
+                //   textInputType: TextInputType.name,
+                //   controller: bioController,
+                //   hintText: 'Enter Your Bio',
+                // ),
                 const SizedBox(height: 20),
                 CustomBotton(
                   onPressed: () async {

@@ -4,15 +4,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:storeapp/Core/Helper_Functions/failuer_top_snak_bar.dart';
 import 'package:storeapp/Core/Utils/app_name_animated_text.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
-import 'package:storeapp/Core/Utils/show_dialog.dart';
 import 'package:storeapp/Core/Widget/custom_botton.dart';
 import 'package:storeapp/Core/Widget/custom_text_field.dart';
 import 'package:storeapp/Featuers/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/widget/have_an_account_widget.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/implement_profile_image.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/widget/password_field.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/widget/terms_and_condition.dart';
-
 import 'package:storeapp/constans.dart';
 
 class SignupViewBody extends StatefulWidget {
@@ -56,41 +53,41 @@ class _SignupViewBodyState extends State<SignupViewBody> {
     super.dispose();
   }
 
-  Future<void> localImagePicker() async {
-    final ImagePicker picker = ImagePicker();
-    await ShowDialogClass.imagePickerDialog(
-      context: context,
-      cameraFCT: () {
-        picker.pickImage(source: ImageSource.camera).then(
-          (value) {
-            setState(
-              () {
-                pickImage = value;
-              },
-            );
-          },
-        );
-      },
-      galleryFCT: () {
-        picker.pickImage(source: ImageSource.gallery).then(
-          (value) {
-            setState(
-              () {
-                pickImage = value;
-              },
-            );
-          },
-        );
-      },
-      removeFCT: () {
-        setState(
-          () {
-            pickImage = null;
-          },
-        );
-      },
-    );
-  }
+  // Future<void> localImagePicker() async {
+  //   final ImagePicker picker = ImagePicker();
+  //   await ShowDialogClass.imagePickerDialog(
+  //     context: context,
+  //     cameraFCT: () {
+  //       picker.pickImage(source: ImageSource.camera).then(
+  //         (value) {
+  //           setState(
+  //             () {
+  //               pickImage = value;
+  //             },
+  //           );
+  //         },
+  //       );
+  //     },
+  //     galleryFCT: () {
+  //       picker.pickImage(source: ImageSource.gallery).then(
+  //         (value) {
+  //           setState(
+  //             () {
+  //               pickImage = value;
+  //             },
+  //           );
+  //         },
+  //       );
+  //     },
+  //     removeFCT: () {
+  //       setState(
+  //         () {
+  //           pickImage = null;
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +125,15 @@ class _SignupViewBodyState extends State<SignupViewBody> {
               const SizedBox(
                 height: 16,
               ),
-              ImplementProfileImage(
-                pickImage: pickImage,
-                function: () async {
-                  await localImagePicker();
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
+              // ImplementProfileImage(
+              //   pickImage: pickImage,
+              //   function: () async {
+              //     await localImagePicker();
+              //   },
+              // ),
+              // const SizedBox(
+              //   height: 16,
+              // ),
               Form(
                 key: formKey,
                 autovalidateMode: autovalidateMode,
@@ -234,15 +231,15 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                             return; // Stop further processing if terms are not accepted
                           }
 
-                          if (pickImage == null) {
-                            ShowDialogClass.showDialogClass(
-                              isError: true,
-                              context: context,
-                              text: 'Please select an image',
-                              function: () {},
-                            );
-                            return; // Stop further processing if image is not selected
-                          }
+                          // if (pickImage == null) {
+                          //   ShowDialogClass.showDialogClass(
+                          //     isError: true,
+                          //     context: context,
+                          //     text: 'Please select an image',
+                          //     function: () {},
+                          //   );
+                          //   return; // Stop further processing if image is not selected
+                          // }
 
                           // Proceed with signup if both conditions are met
                           context
