@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/profil
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/search/search_view.dart';
 
 import 'package:storeapp/providers/cart_provider.dart';
+import 'package:storeapp/providers/product_provider.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -25,6 +28,7 @@ class _NavBarState extends State<NavBar> {
   ];
   late PageController? controller;
   int currentPage = 0;
+  bool isLoadingProds = true;
 
   @override
   void initState() {
@@ -32,6 +36,30 @@ class _NavBarState extends State<NavBar> {
       initialPage: currentPage,
     );
     super.initState();
+  }
+
+  Future<void> fetcFCT() async {
+    final productsProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+    try {
+      Future.wait({
+        productsProvider.fetchProducts(),
+      });
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        isLoadingProds = false;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isLoadingProds) {
+      fetcFCT();
+    }
+    super.didChangeDependencies();
   }
 
   @override

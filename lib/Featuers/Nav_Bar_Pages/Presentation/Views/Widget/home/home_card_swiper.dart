@@ -41,21 +41,29 @@ class HomeCardSwiper extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        const Text(
-          'Latest Arrival',
-          style: AppStyles.styleSemiBold24,
+        Visibility(
+          visible: productProvider.getProducts.isNotEmpty,
+          child: const Text(
+            'Latest Arrival',
+            style: AppStyles.styleSemiBold24,
+          ),
         ),
         const SizedBox(height: 16),
-        SizedBox(
-          height: size.height * 0.2,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return ChangeNotifierProvider.value(
-                  value: productProvider.getProducts[index],
-                  child: const LatestArrival());
-            },
+        Visibility(
+          visible: productProvider.getProducts.isNotEmpty,
+          child: SizedBox(
+            height: size.height * 0.2,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: productProvider.getProducts.length < 10
+                  ? productProvider.getProducts.length
+                  : 10,
+              itemBuilder: (context, index) {
+                return ChangeNotifierProvider.value(
+                    value: productProvider.getProducts[index],
+                    child: const LatestArrival());
+              },
+            ),
           ),
         )
       ],
