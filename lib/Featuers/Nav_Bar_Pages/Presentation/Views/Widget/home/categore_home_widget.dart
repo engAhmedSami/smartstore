@@ -24,9 +24,10 @@ class CategoreHomeWidget extends StatelessWidget {
             width: 50,
             fit: BoxFit.fill,
           ),
+          const SizedBox(height: 4),
           Text(
             name,
-            style: AppStyles.styleBold16,
+            style: AppStyles.styleMedium14,
           )
         ],
       ),
