@@ -41,9 +41,11 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_iconly: ^1.0.2
+  fluttertoast: ^8.2.8
   get_it: ^8.0.0
   google_sign_in: ^6.2.1
   image_picker: ^1.1.2
+  ionicons: ^0.2.2
   modal_progress_hud_nsn: ^0.5.1
   provider: ^6.1.2
   shared_preferences: ^2.3.2

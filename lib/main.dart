@@ -15,10 +15,14 @@ import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/search
 import 'package:storeapp/Featuers/auth/presentation/views/forgot_password_view.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/signin_view.dart';
 import 'package:storeapp/Featuers/auth/presentation/views/signup_view.dart';
+import 'package:storeapp/Featuers/authUseingProvider/forgot_password.dart';
+import 'package:storeapp/Featuers/authUseingProvider/login.dart';
+import 'package:storeapp/Featuers/authUseingProvider/register.dart';
 import 'package:storeapp/firebase_options.dart';
 import 'package:storeapp/providers/cart_provider.dart';
 import 'package:storeapp/providers/product_provider.dart';
 import 'package:storeapp/providers/theme_provider.dart';
+import 'package:storeapp/providers/user_provider.dart';
 import 'package:storeapp/providers/viewed_prod_provider.dart';
 import 'package:storeapp/providers/wishlist_provider.dart';
 
@@ -56,6 +60,9 @@ class SmartStore extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ViewedProdProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(builder: (
         context,
@@ -78,6 +85,10 @@ class SmartStore extends StatelessWidget {
                 const ForgotPasswordView(),
             SearchView.routeName: (context) => const SearchView(),
             NavBar.routeName: (context) => const NavBar(),
+            ForgotPasswordScreen.routeName: (context) =>
+                const ForgotPasswordScreen(),
+            LoginScreen.routeName: (context) => const LoginScreen(),
+            RegisterScreen.routeName: (context) => const RegisterScreen(),
           },
         );
       }),

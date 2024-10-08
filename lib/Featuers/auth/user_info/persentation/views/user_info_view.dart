@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storeapp/Core/Utils/app_name_animated_text.dart';
-import 'package:storeapp/Core/Utils/custom_progrss_hud.dart';
 import 'package:storeapp/Featuers/auth/user_info/persentation/save_info_cubit/profile_cubit.dart';
 import 'package:storeapp/Featuers/auth/user_info/persentation/save_info_cubit/profile_state.dart';
 import 'package:storeapp/Featuers/auth/user_info/persentation/views/widget/user_info_view_body.dart';
@@ -24,10 +23,7 @@ class UserInfoView extends StatelessWidget {
         body: BlocConsumer<ProfileCubit, ProfileState>(
           listener: (context, state) {},
           builder: (context, state) {
-            return CustomProgrssHud(
-              isLoading: state is ProfileLoading ? true : false,
-              child: const UserInfoViewBody(),
-            );
+            return const UserInfoViewBody();
           },
         ),
       ),
