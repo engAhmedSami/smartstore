@@ -33,8 +33,9 @@ class CartView extends StatelessWidget {
               ShowDialogClass.showDialogClass(
                 context: context,
                 text: 'Remove all items ?',
-                function: () {
-                  cartProvider.clearLocalCart();
+                function: () async {
+                  // cartProvider.clearLocalCart();
+                  await cartProvider.clearCartFromFirebase();
                 },
               );
             },
