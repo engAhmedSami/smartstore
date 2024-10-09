@@ -6,7 +6,8 @@ import 'package:storeapp/providers/cart_provider.dart';
 import 'package:storeapp/providers/product_provider.dart';
 
 class BouttomCheckout extends StatelessWidget {
-  const BouttomCheckout({super.key});
+  const BouttomCheckout({super.key, required this.function});
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,12 @@ class BouttomCheckout extends StatelessWidget {
             ),
           ],
         ),
-        CustomBotton(width: 120, onPressed: () {}, text: 'Checkout')
+        CustomBotton(
+            width: 120,
+            onPressed: () async {
+              await function();
+            },
+            text: 'Checkout')
       ],
     );
   }

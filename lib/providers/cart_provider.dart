@@ -192,4 +192,18 @@ class CartProvider with ChangeNotifier {
     );
     return total;
   }
+
+  double getTotal({required ProductProvider productProvider}) {
+    double total = 0.0;
+    cartItems.forEach((key, value) {
+      final ProductModel? getCurrProduct =
+          productProvider.findByProdId(value.productId);
+      if (getCurrProduct == null) {
+        total += 0;
+      } else {
+        total += double.parse(getCurrProduct.productPrice) * value.quantity;
+      }
+    });
+    return total;
+  }
 }

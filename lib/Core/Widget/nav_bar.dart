@@ -10,6 +10,7 @@ import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/search
 
 import 'package:storeapp/providers/cart_provider.dart';
 import 'package:storeapp/providers/product_provider.dart';
+import 'package:storeapp/providers/user_provider.dart';
 import 'package:storeapp/providers/wishlist_provider.dart';
 
 class NavBar extends StatefulWidget {
@@ -45,10 +46,12 @@ class _NavBarState extends State<NavBar> {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final wishlistProvider =
         Provider.of<WishlistProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       Future.wait({
         productsProvider.fetchProducts(),
+        userProvider.fetchUserInfo(),
       });
       Future.wait({
         cartProvider.fetchCart(),

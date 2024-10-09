@@ -6,7 +6,10 @@ import 'package:storeapp/providers/cart_provider.dart';
 class Checkout extends StatelessWidget {
   const Checkout({
     super.key,
+    required this.function,
   });
+
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +23,16 @@ class Checkout extends StatelessWidget {
                   top: BorderSide(
                       color: Theme.of(context).dividerColor, width: 1)),
             ),
-            child: const SizedBox(
+            child: SizedBox(
               height: kBottomNavigationBarHeight + 10,
               child: Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 10,
                 ),
-                child: BouttomCheckout(),
+                child: BouttomCheckout(
+                  function: function,
+                ),
               ),
             ),
           );
