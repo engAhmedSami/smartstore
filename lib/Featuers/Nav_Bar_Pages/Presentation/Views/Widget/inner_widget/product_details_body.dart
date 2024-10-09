@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Models/product_model.dart';
 
 import 'package:storeapp/Core/Utils/app_styles.dart';
@@ -83,7 +84,19 @@ class ProductDetailsBody extends StatelessWidget {
                                   productId: productId)) {
                                 return;
                               }
-                              cartProvider.addItemsToCart(productId: productId);
+                              try {
+                                cartProvider.addToCartFirebase(
+                                  productId: getCurrProduct.productId,
+                                  qty: 1,
+                                  context: context,
+                                );
+                              } catch (e) {
+                                MyAppMethods.showErrorORWarningDialog(
+                                  context: context,
+                                  subtitle: e.toString(),
+                                  fct: () {},
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

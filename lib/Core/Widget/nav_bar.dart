@@ -41,9 +41,14 @@ class _NavBarState extends State<NavBar> {
   Future<void> fetcFCT() async {
     final productsProvider =
         Provider.of<ProductProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
     try {
       Future.wait({
         productsProvider.fetchProducts(),
+      });
+      Future.wait({
+        cartProvider.fetchCart(),
       });
     } catch (e) {
       log(e.toString());

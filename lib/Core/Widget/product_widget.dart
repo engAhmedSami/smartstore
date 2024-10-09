@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/providers/viewed_prod_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/product_provider.dart';
@@ -99,8 +100,19 @@ class _ProductWidgetState extends State<ProductWidget> {
                                   productId: getCurrProduct.productId)) {
                                 return;
                               }
-                              cartProvider.addItemsToCart(
-                                  productId: getCurrProduct.productId);
+                              try {
+                                cartProvider.addToCartFirebase(
+                                  productId: getCurrProduct.productId,
+                                  qty: 1,
+                                  context: context,
+                                );
+                              } catch (e) {
+                                MyAppMethods.showErrorORWarningDialog(
+                                  context: context,
+                                  subtitle: e.toString(),
+                                  fct: () {},
+                                );
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),

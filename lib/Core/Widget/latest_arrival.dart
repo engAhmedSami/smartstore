@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Models/product_model.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/product_details.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
@@ -69,13 +70,24 @@ class LatestArrival extends StatelessWidget {
                           productId: getCurrProduct!.productId,
                         ),
                         IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (cartProvider.isProductInCart(
                                 productId: getCurrProduct.productId)) {
                               return;
                             }
-                            cartProvider.addItemsToCart(
-                                productId: getCurrProduct.productId);
+                            try {
+                              cartProvider.addToCartFirebase(
+                                productId: getCurrProduct.productId,
+                                qty: 1,
+                                context: context,
+                              );
+                            } catch (e) {
+                              MyAppMethods.showErrorORWarningDialog(
+                                context: context,
+                                subtitle: e.toString(),
+                                fct: () {},
+                              );
+                            }
                           },
                           icon: Icon(
                             cartProvider.isProductInCart(

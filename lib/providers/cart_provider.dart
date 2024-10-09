@@ -1,4 +1,10 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Models/cart_model.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Models/product_model.dart';
 
@@ -16,6 +22,67 @@ class CartProvider with ChangeNotifier {
     required String productId,
   }) {
     return cartItems.containsKey(productId);
+  }
+
+  final usersDB = FirebaseFirestore.instance.collection("users");
+  final _auth = FirebaseAuth.instance;
+  Future<void> addToCartFirebase(
+      {required String productId,
+      required int qty,
+      required BuildContext context}) async {
+    final User? user = _auth.currentUser;
+    if (user == null) {
+      MyAppMethods.showErrorORWarningDialog(
+          context: context, subtitle: "No user found", fct: () {});
+      return;
+    }
+    final uid = user.uid;
+    final cartId = const Uuid().v4();
+    try {
+      usersDB.doc(uid).update({
+        'userCart': FieldValue.arrayUnion([
+          {
+            "cartId": cartId,
+            'productId': productId,
+            'quantity': qty,
+          }
+        ])
+      });
+      await fetchCart();
+      Fluttertoast.showToast(msg: "Item has been added to cart");
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchCart() async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      log("the function has been called and the user is null");
+      cartItems.clear();
+      return;
+    }
+    try {
+      final userDoc = await usersDB.doc(user.uid).get();
+      final data = userDoc.data();
+      if (data == null || !data.containsKey("userCart")) {
+        return;
+      }
+      final leng = userDoc.get("userCart").length;
+      for (int index = 0; index < leng; index++) {
+        cartItems.putIfAbsent(
+          userDoc.get('userCart')[index]['productId'],
+          () => CartModel(
+            cartId: userDoc.get('userCart')[index]['cartId'],
+            productId: userDoc.get('userCart')[index]['productId'],
+            quantity: userDoc.get('userCart')[index]['quantity'],
+          ),
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+    notifyListeners();
   }
 
   void addItemsToCart({
