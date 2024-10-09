@@ -1,10 +1,11 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
-import 'package:storeapp/constans.dart';
+import 'package:storeapp/Featuers/Nav_Bar_Pages/Models/order.dart';
 
 class OrdersWidgetItems extends StatefulWidget {
-  const OrdersWidgetItems({super.key});
+  const OrdersWidgetItems({super.key, required this.ordersModelAdvanced});
+  final OrdersModelAdvanced ordersModelAdvanced;
 
   @override
   State<OrdersWidgetItems> createState() => _OrdersWidgetItemsState();
@@ -24,7 +25,7 @@ class _OrdersWidgetItemsState extends State<OrdersWidgetItems> {
             child: FancyShimmerImage(
               height: size.width * 0.25,
               width: size.width * 0.25,
-              imageUrl: AppConstans.product1mageUr1,
+              imageUrl: widget.ordersModelAdvanced.imageUrl,
             ),
           ),
           Flexible(
@@ -36,9 +37,9 @@ class _OrdersWidgetItemsState extends State<OrdersWidgetItems> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Flexible(
+                      Flexible(
                         child: Text(
-                          'productTitle',
+                          widget.ordersModelAdvanced.productTitle,
                           maxLines: 2,
                           style: AppStyles.styleMedium14,
                         ),
@@ -60,7 +61,7 @@ class _OrdersWidgetItemsState extends State<OrdersWidgetItems> {
                       ),
                       Flexible(
                         child: Text(
-                          "11.99 \$",
+                          "${widget.ordersModelAdvanced.price} \$",
                           style: AppStyles.styleMedium14.copyWith(
                             color: Colors.blue,
                           ),
@@ -71,8 +72,8 @@ class _OrdersWidgetItemsState extends State<OrdersWidgetItems> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text(
-                    "Qty: 10",
+                  Text(
+                    "Qty: ${widget.ordersModelAdvanced.quantity}",
                     style: AppStyles.styleMedium14,
                   ),
                   const SizedBox(

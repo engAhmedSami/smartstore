@@ -18,6 +18,7 @@ import 'package:storeapp/Featuers/authUseingProvider/login.dart';
 import 'package:storeapp/Featuers/authUseingProvider/register.dart';
 import 'package:storeapp/firebase_options.dart';
 import 'package:storeapp/providers/cart_provider.dart';
+import 'package:storeapp/providers/order_provider.dart';
 import 'package:storeapp/providers/product_provider.dart';
 import 'package:storeapp/providers/theme_provider.dart';
 import 'package:storeapp/providers/user_provider.dart';
@@ -60,6 +61,9 @@ class SmartStore extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrdersProvider(),
         ),
       ],
       child: Consumer<ThemeProvider>(builder: (

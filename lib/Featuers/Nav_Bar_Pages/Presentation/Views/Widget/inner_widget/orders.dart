@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/orders_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:storeapp/Core/Utils/app_name_animated_text.dart';
 import 'package:storeapp/Core/Utils/assets.dart';
 import 'package:storeapp/Core/Widget/empty_widget.dart';
+import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/orders_widget_items.dart';
+import 'package:storeapp/providers/order_provider.dart';
 
 class Orders extends StatefulWidget {
   const Orders({super.key});
@@ -16,6 +18,7 @@ class _OrdersState extends State<Orders> {
   bool isEmptyOrders = false;
   @override
   Widget build(BuildContext context) {
+    final ordersProvider = Provider.of<OrdersProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -24,15 +27,41 @@ class _OrdersState extends State<Orders> {
           fontSize: 20,
         ),
       ),
-      body: isEmptyOrders
-          ? const EmptyWidget(
-              size: Size(200, 200),
-              image: Assets.users_imagesBagOrder,
-              title: 'No Orders has been placed yet',
-              subtitle: '',
+      body: FutureBuilder(
+        future: ordersProvider.fetchOrder(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child:
+                  Center(child: Text('Something went wrong ${snapshot.error}')),
+            );
+          } else if (snapshot.data == null) {
+            return EmptyWidget(
+              size: MediaQuery.of(context).size,
+              image: Assets.users_imagesBagBagWish,
+              title: 'Your Orders is empty',
+              subtitle:
+                  'Looks like you haven\'t added anything in your Orders yet.',
               texButoon: 'Shop Now',
-            )
-          : const OrdersWidget(),
+            );
+          }
+          return ListView.separated(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return OrdersWidgetItems(
+                ordersModelAdvanced: snapshot.data![index],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const Divider();
+            },
+          );
+        },
+      ),
     );
   }
 }
