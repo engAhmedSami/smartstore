@@ -11,7 +11,7 @@ import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
 import 'dart:developer';
 
-import 'package:storeapp/Featuers/auth/presentation/views/widget/social_login_button.dart';
+import 'package:storeapp/Featuers/authUseingProvider/social_login_button.dart';
 
 class GoogleButton extends StatefulWidget {
   const GoogleButton({super.key});

@@ -14,4 +14,17 @@ class UserModelProvider with ChangeNotifier {
     required this.userWish,
     required this.createdAt,
   });
+
+  // Factory method to create a UserModelProvider from a Firestore map
+  factory UserModelProvider.fromMap(Map<String, dynamic> data) {
+    return UserModelProvider(
+      userId: data['userId'],
+      userName: data['userName'],
+      userImage: data['userImage'],
+      userEmail: data['userEmail'],
+      userCart: data['userCart'] ?? [],
+      userWish: data['userWish'] ?? [],
+      createdAt: data['createdAt'],
+    );
+  }
 }

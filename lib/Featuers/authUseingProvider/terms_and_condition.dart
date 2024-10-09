@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/custom_check_box.dart';
+import 'package:storeapp/Featuers/authUseingProvider/custom_check_box.dart';
 
 class TermsAndCondition extends StatefulWidget {
   const TermsAndCondition({super.key, required this.onChange});

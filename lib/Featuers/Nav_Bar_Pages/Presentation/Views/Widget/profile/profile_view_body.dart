@@ -205,7 +205,7 @@ import 'package:storeapp/Core/Utils/app_styles.dart';
 import 'package:storeapp/Core/Utils/assets.dart';
 
 import 'package:storeapp/Featuers/authUseingProvider/login.dart';
-import 'package:storeapp/Featuers/authUseingProvider/edit_profile_body.dart';
+import 'package:storeapp/Featuers/authUseingProvider/user_info_list_tile.dart';
 import 'package:storeapp/Featuers/authUseingProvider/user_model.dart';
 import 'package:storeapp/providers/theme_provider.dart';
 import 'package:storeapp/providers/user_provider.dart';
@@ -268,55 +268,58 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             if (user == null)
               const Padding(
                 padding: EdgeInsets.all(20.0),
-                child: Text("Please log in to have full access."),
+                child: Text("Please log in to have full access.",
+                    style: AppStyles.styleSemiBold18),
               ),
             const SizedBox(height: 20),
             if (userModelProvider != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).cardColor,
-                        border: Border.all(width: 3),
-                        image: DecorationImage(
-                          image: NetworkImage(userModelProvider!.userImage),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+              Row(
+                children: [
+                  Expanded(
+                    child: UserInfoListTile(
+                      uid: user!.uid,
                     ),
-                    const SizedBox(width: 7),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(userModelProvider!.userName),
-                        Text(userModelProvider!.userEmail),
-                        TextButton(
-                          onPressed: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditUserInfoView(
-                                  uid: user!.uid,
-                                  userModelProvider: userModelProvider!,
-                                  onUserInfoUpdated: fetchUserInfo,
-                                ),
-                              ),
-                            );
-                            if (result == true) {
-                              fetchUserInfo(); // Refresh after editing
-                            }
-                          },
-                          child: const Text("Edit"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  // Container(
+                  //   height: 60,
+                  //   width: 60,
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     color: Theme.of(context).cardColor,
+                  //     border: Border.all(width: 3),
+                  //     image: DecorationImage(
+                  //       image: NetworkImage(userModelProvider!.userImage),
+                  //       fit: BoxFit.fill,
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 7),
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Text(userModelProvider!.userName),
+                  //     Text(userModelProvider!.userEmail),
+                  //     TextButton(
+                  //       onPressed: () async {
+                  //         final result = await Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (context) => EditUserInfoView(
+                  //               uid: user!.uid,
+                  //               userModelProvider: userModelProvider!,
+                  //               onUserInfoUpdated: fetchUserInfo,
+                  //             ),
+                  //           ),
+                  //         );
+                  //         if (result == true) {
+                  //           fetchUserInfo(); // Refresh after editing
+                  //         }
+                  //       },
+                  //       child: const Text("Edit"),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
               ),
             const SizedBox(height: 16),
             const General(),

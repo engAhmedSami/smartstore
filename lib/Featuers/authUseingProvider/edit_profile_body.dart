@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:storeapp/Core/Utils/app_name_animated_text.dart';
 import 'package:storeapp/Core/Utils/custom_progrss_hud.dart';
+import 'package:storeapp/Core/Utils/show_dialog.dart';
 import 'package:storeapp/Core/Widget/custom_botton.dart';
 import 'package:storeapp/Core/Widget/custom_text_field.dart';
-import 'package:storeapp/Featuers/authUseingProvider/user_model.dart';
+import 'package:storeapp/Featuers/authUseingProvider/user_model.dart'; // Use UserModelProvider
 
 class EditUserInfoView extends StatefulWidget {
   final String uid;
-  final UserModelProvider userModelProvider;
+  final UserModelProvider userModelProvider; // Replaced with UserModelProvider
   final VoidCallback onUserInfoUpdated;
 
   const EditUserInfoView({
@@ -39,6 +41,7 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
     super.initState();
     nameController =
         TextEditingController(text: widget.userModelProvider.userName);
+    // Assuming `userModelProvider` has a `bio` or similar field; update this if necessary
 
     profilePicUrl = widget.userModelProvider.userImage;
   }
@@ -52,12 +55,31 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        profileImage = pickedImage;
-      });
-    }
+
+    await ShowDialogClass.userImagePickerDialog(
+      context: context,
+      cameraFCT: () {
+        picker.pickImage(source: ImageSource.camera).then((value) {
+          setState(() {
+            profileImage = value;
+          });
+        });
+      },
+      galleryFCT: () {
+        picker.pickImage(source: ImageSource.gallery).then((value) {
+          setState(() {
+            profileImage = value;
+          });
+        });
+      },
+      // removeFCT: () {
+      //   setState(() {
+      //     profileImage = null;
+      //     profilePicUrl = null;
+      //   });
+      //   succesTopSnackBar(context, 'Profile image removed successfully');
+      // },
+    );
   }
 
   Future<String?> _uploadImageToFirebase(String filePath) async {
@@ -75,6 +97,16 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
     }
   }
 
+  Future<void> _deleteImageFromFirebase(String imageUrl) async {
+    try {
+      final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+      await ref.delete();
+      debugPrint("Image deleted successfully from Firebase Storage");
+    } catch (e) {
+      debugPrint("Error deleting image: $e");
+    }
+  }
+
   Future<void> _updateUserInfo() async {
     setState(() {
       isLoading = true;
@@ -85,9 +117,17 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
         profilePicUrl = await _uploadImageToFirebase(profileImage!.path);
       }
 
+      if (profileImage == null &&
+          profilePicUrl == null &&
+          widget.userModelProvider.userImage.isNotEmpty) {
+        await _deleteImageFromFirebase(widget.userModelProvider.userImage);
+      }
+
       final updatedUserInfo = {
-        'name': nameController.text,
-        'profilePic': profilePicUrl,
+        'userName': nameController.text,
+        // Assuming the bio field should be saved in Firestore
+
+        'userImage': profilePicUrl,
       };
 
       await FirebaseFirestore.instance
@@ -97,9 +137,9 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
 
       widget.onUserInfoUpdated();
 
-      if (!mounted) return;
-
-      Navigator.of(context).pop(true);
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     } catch (e) {
       debugPrint("Error updating user info: $e");
     } finally {
@@ -113,7 +153,10 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: const AppNameAnimatedText(
+          text: 'Edit Profile',
+          fontSize: 20,
+        ),
       ),
       body: CustomProgrssHud(
         isLoading: isLoading,
@@ -141,7 +184,6 @@ class EditUserInfoViewState extends State<EditUserInfoView> {
                   prefixIcon: const Icon(Icons.person, color: Colors.grey),
                   textInputType: TextInputType.name,
                 ),
-                const SizedBox(height: 24),
                 const SizedBox(height: 24),
                 CustomBotton(
                   text: 'Update',

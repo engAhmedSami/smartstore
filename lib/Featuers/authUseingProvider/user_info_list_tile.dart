@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:storeapp/Featuers/auth/user_info/data/user_info_model.dart';
-import 'package:storeapp/Featuers/auth/user_info/persentation/views/widget/edit_profile_body.dart';
+import 'package:flutter/material.dart';
+import 'package:storeapp/Featuers/authUseingProvider/edit_profile_body.dart';
+import 'package:storeapp/Featuers/authUseingProvider/user_model.dart';
 
 class UserInfoListTile extends StatefulWidget {
   final String uid;
@@ -14,7 +15,7 @@ class UserInfoListTile extends StatefulWidget {
 }
 
 class UserInfoListTileState extends State<UserInfoListTile> {
-  late Future<UserInfoModel> _userInfoFuture;
+  late Future<UserModelProvider> _userInfoFuture;
 
   @override
   void initState() {
@@ -22,14 +23,14 @@ class UserInfoListTileState extends State<UserInfoListTile> {
     _userInfoFuture = fetchUserInfo();
   }
 
-  Future<UserInfoModel> fetchUserInfo() async {
+  Future<UserModelProvider> fetchUserInfo() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('users')
         .doc(widget.uid)
         .get();
 
     if (docSnapshot.exists) {
-      return UserInfoModel.fromMap(docSnapshot.data()!);
+      return UserModelProvider.fromMap(docSnapshot.data()!);
     } else {
       throw Exception("User data not found");
     }
@@ -44,7 +45,7 @@ class UserInfoListTileState extends State<UserInfoListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserInfoModel>(
+    return FutureBuilder<UserModelProvider>(
       future: _userInfoFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,8 +59,8 @@ class UserInfoListTileState extends State<UserInfoListTile> {
             title: Text("User data not found"),
           );
         } else {
-          final userInfoModel = snapshot.data!;
-          String profilePicUrl = userInfoModel.profilePic ?? '';
+          final userModel = snapshot.data!;
+          String profilePicUrl = userModel.userImage;
 
           if (profilePicUrl.isEmpty) {
             profilePicUrl =
@@ -73,15 +74,15 @@ class UserInfoListTileState extends State<UserInfoListTile> {
                   : NetworkImage(profilePicUrl) as ImageProvider,
               radius: 30,
             ),
-            title: Text(userInfoModel.name ?? ''),
-            subtitle: Text(userInfoModel.email ?? ''),
+            title: Text(userModel.userName),
+            subtitle: Text(userModel.userEmail),
             onTap: () async {
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditUserInfoView(
                     uid: widget.uid,
-                    userInfo: userInfoModel,
+                    userModelProvider: userModel,
                     onUserInfoUpdated: _updateUserInfo,
                   ),
                 ),

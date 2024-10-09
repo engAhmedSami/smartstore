@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/Core/Services/custom_block_observer.dart';
-import 'package:storeapp/Core/Services/get_it_service.dart';
 import 'package:storeapp/Core/Services/shared_preferences_sengleton.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/orders.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_widget/product_details.dart';
@@ -12,10 +11,9 @@ import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/inner_
 import 'package:storeapp/Core/Utils/theme_data.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
 import 'package:storeapp/Featuers/Nav_Bar_Pages/Presentation/Views/Widget/search/search_view.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/forgot_password_view.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/signin_view.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/signup_view.dart';
+
 import 'package:storeapp/Featuers/authUseingProvider/forgot_password.dart';
+import 'package:storeapp/Featuers/authUseingProvider/forgot_password_view.dart';
 import 'package:storeapp/Featuers/authUseingProvider/login.dart';
 import 'package:storeapp/Featuers/authUseingProvider/register.dart';
 import 'package:storeapp/firebase_options.dart';
@@ -34,7 +32,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Prefs.init();
-  setupGetit();
+  // setupGetit();
   runApp(const SmartStore());
 }
 
@@ -78,8 +76,8 @@ class SmartStore extends StatelessWidget {
             ProductDetails.routeName: (context) => const ProductDetails(),
             Wishlist.routeName: (context) => const Wishlist(),
             ViewedRecently.routeName: (context) => const ViewedRecently(),
-            SignupView.routeName: (context) => const SignupView(),
-            SignInView.routeName: (context) => const SignInView(),
+            // SignupView.routeName: (context) => const SignupView(),
+            // SignInView.routeName: (context) => const SignInView(),
             Orders.routeName: (context) => const Orders(),
             ForgotPasswordView.routeName: (context) =>
                 const ForgotPasswordView(),

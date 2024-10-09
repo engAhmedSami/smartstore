@@ -13,8 +13,9 @@ import 'package:storeapp/Core/Utils/my_app_method.dart';
 import 'package:storeapp/Core/Widget/custom_botton.dart';
 import 'package:storeapp/Core/Widget/custom_text_field.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/have_an_account_widget.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/password_field.dart';
+
+import 'package:storeapp/Featuers/authUseingProvider/have_an_account_widget.dart';
+import 'package:storeapp/Featuers/authUseingProvider/password_field.dart';
 import 'package:storeapp/Featuers/authUseingProvider/pick_image_widget.dart';
 import 'package:storeapp/constans.dart';
 

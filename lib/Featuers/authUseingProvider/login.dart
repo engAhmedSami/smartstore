@@ -12,12 +12,13 @@ import 'package:storeapp/Core/Widget/custom_botton.dart';
 import 'package:storeapp/Core/Widget/custom_text_field.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
 import 'package:storeapp/Core/errors/exceptions.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/forgot_password_view.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/dont_have_an_account_widget.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/or_divider.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/password_field.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/widget/social_login_button.dart';
+import 'package:storeapp/Featuers/authUseingProvider/dont_have_an_account_widget.dart';
+import 'package:storeapp/Featuers/authUseingProvider/forgot_password_view.dart';
+
 import 'package:storeapp/Featuers/authUseingProvider/google_btn.dart';
+import 'package:storeapp/Featuers/authUseingProvider/or_divider.dart';
+import 'package:storeapp/Featuers/authUseingProvider/password_field.dart';
+import 'package:storeapp/Featuers/authUseingProvider/social_login_button.dart';
 import 'package:storeapp/constans.dart';
 
 class LoginScreen extends StatefulWidget {

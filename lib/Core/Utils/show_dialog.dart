@@ -27,7 +27,7 @@ class ShowDialogClass {
             ),
             Text(
               text,
-              style: AppStyles.styleSemiBold18,
+              style: AppStyles.styleMedium14,
             ),
             const SizedBox(
               height: 20,
@@ -111,6 +111,48 @@ class ShowDialogClass {
                   },
                   label: const Text('Remove'),
                   icon: const Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static Future<void> userImagePickerDialog({
+    required BuildContext context,
+    required Function cameraFCT,
+    required Function galleryFCT,
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Select Image',
+              style: AppStyles.styleMedium20,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    cameraFCT();
+                    Navigator.pop(context);
+                  },
+                  label: const Text('photo'),
+                  icon: const Icon(IconlyLight.camera),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    galleryFCT();
+                    Navigator.pop(context);
+                  },
+                  label: const Text('Gallery'),
+                  icon: const Icon(Icons.image),
                 ),
               ],
             ),
