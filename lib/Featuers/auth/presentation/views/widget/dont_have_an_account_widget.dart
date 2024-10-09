@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:storeapp/Core/Utils/app_styles.dart';
-import 'package:storeapp/Featuers/auth/presentation/views/signup_view.dart';
+import 'package:storeapp/Featuers/authUseingProvider/register.dart';
 
 class DontHaveAnAccountWidget extends StatelessWidget {
   const DontHaveAnAccountWidget({
@@ -22,7 +22,7 @@ class DontHaveAnAccountWidget extends StatelessWidget {
           TextSpan(
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.pushNamed(context, SignupView.routeName);
+                Navigator.pushNamed(context, RegisterScreen.routeName);
               },
             text: 'Sign Up',
             style: AppStyles.styleSemiBold16.copyWith(

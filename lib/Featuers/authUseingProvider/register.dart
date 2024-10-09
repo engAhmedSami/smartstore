@@ -170,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 60.0,
                   ),
                   const AppNameAnimatedText(
-                    text: "Welcome",
+                    text: "Shop Smart",
                     fontSize: 30,
                   ),
                   const SizedBox(

@@ -1,14 +1,23 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:storeapp/Core/Helper_Functions/failuer_top_snak_bar.dart';
+import 'package:storeapp/Core/Helper_Functions/scccess_top_snak_bar.dart';
 import 'package:storeapp/Core/Utils/app_name_animated_text.dart';
+import 'package:storeapp/Core/Utils/app_styles.dart';
+import 'package:storeapp/Core/Utils/assets.dart';
 import 'package:storeapp/Core/Utils/loading_manager.dart';
-import 'package:storeapp/Core/Utils/my_app_method.dart';
+import 'package:storeapp/Core/Widget/custom_botton.dart';
+import 'package:storeapp/Core/Widget/custom_text_field.dart';
 import 'package:storeapp/Core/Widget/nav_bar.dart';
-import 'package:storeapp/Featuers/authUseingProvider/forgot_password.dart';
+import 'package:storeapp/Core/errors/exceptions.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/forgot_password_view.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/widget/dont_have_an_account_widget.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/widget/or_divider.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/widget/password_field.dart';
+import 'package:storeapp/Featuers/auth/presentation/views/widget/social_login_button.dart';
 import 'package:storeapp/Featuers/authUseingProvider/google_btn.dart';
-import 'package:storeapp/Featuers/authUseingProvider/register.dart';
 import 'package:storeapp/constans.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late final FocusNode _passwordFocusNode;
   late final _formKey = GlobalKey<FormState>();
   bool obscureText = true;
-  bool _isLoading = false;
+  bool isLoading = false;
 
   final auth = FirebaseAuth.instance;
   @override
@@ -49,46 +58,65 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _loginFct() async {
-    final isValid = _formKey.currentState!.validate();
-    FocusScope.of(context).unfocus();
+  // Sign in with Email and Password
+  Future<User?> loginFct(
+      {required String email, required String password}) async {
+    setState(() {
+      isLoading = true;
+    });
 
-    if (isValid) {
-      _formKey.currentState!.save();
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-      try {
-        setState(() {
-          _isLoading = true;
-        });
-        await auth.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-        Fluttertoast.showToast(
-          msg: "Login Successful",
-          toastLength: Toast.LENGTH_SHORT,
-          textColor: Colors.white,
-        );
-        if (!mounted) return;
+      if (!mounted) return credential.user;
 
-        Navigator.pushReplacementNamed(context, NavBar.routeName);
-      } on FirebaseAuthException catch (error) {
-        await MyAppMethods.showErrorORWarningDialog(
-          context: context,
-          subtitle: "An error has been occured ${error.message}",
-          fct: () {},
-        );
-      } catch (error) {
-        await MyAppMethods.showErrorORWarningDialog(
-          context: context,
-          subtitle: "An error has been occured $error",
-          fct: () {},
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
+      succesTopSnackBar(
+        context,
+        'Login Successful',
+      );
+
+      Navigator.pushReplacementNamed(context, NavBar.routeName);
+
+      return credential.user;
+    } on FirebaseAuthException catch (e) {
+      log('FirebaseAuthException in _loginFct: ${e.code}');
+
+      String errorMessage = '';
+
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found for this email.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password. Please try again.';
+          break;
+        case 'network-request-failed':
+          errorMessage = 'Please check your internet connection.';
+          break;
+        default:
+          errorMessage = 'An error occurred. Please try again later.';
       }
+
+      // Show top snackbar with error message
+      failuerTopSnackBar(context, errorMessage);
+
+      throw CustomExceptions(message: errorMessage);
+    } catch (e) {
+      log('Exception in _loginFct: ${e.toString()}');
+
+      // If the error is unrelated to FirebaseAuth, like network issues, show a generic error message
+      failuerTopSnackBar(
+          context, 'An unexpected error occurred. Please try again later.');
+
+      throw CustomExceptions(
+          message: 'An unexpected error occurred. Please try again later.');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -100,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
         body: LoadingManager(
-          isLoading: _isLoading,
+          isLoading: isLoading,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
@@ -110,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 60.0,
                   ),
                   const AppNameAnimatedText(
-                    text: "Login",
+                    text: "Shop Smart",
                     fontSize: 30,
                   ),
                   const SizedBox(
@@ -118,7 +146,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("Welcome back"),
+                    child: Text(
+                      "Welcome back",
+                      style: AppStyles.styleSemiBold24,
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Let's get you logged in so you can start exploring",
+                      style: AppStyles.styleMedium14,
+                    ),
                   ),
                   const SizedBox(
                     height: 16.0,
@@ -127,17 +165,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        TextFormField(
+                        CustomTextFormField(
                           controller: _emailController,
                           focusNode: _emailFocusNode,
                           textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            hintText: "Email address",
-                            prefixIcon: Icon(
-                              IconlyLight.message,
-                            ),
-                          ),
+                          textInputType: TextInputType.emailAddress,
+                          hintText: 'example123@gmail.com',
+                          onSaved: (value) {
+                            _emailController.text = value!;
+                          },
                           validator: (value) {
                             return MyValidators.emailValidator(value);
                           },
@@ -149,158 +185,75 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 16.0,
                         ),
-                        TextFormField(
-                          controller: _passwordController,
+                        PasswordField(
+                          hintText: 'password',
                           focusNode: _passwordFocusNode,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: obscureText,
-                          decoration: InputDecoration(
-                            hintText: "*********",
-                            prefixIcon: const Icon(
-                              IconlyLight.lock,
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  obscureText = !obscureText;
-                                });
-                              },
-                              icon: Icon(
-                                obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                            ),
-                          ),
+                          controller: _passwordController,
+                          onSaved: (value) {
+                            _passwordController.text = value!;
+                          },
                           validator: (value) {
                             return MyValidators.passwordValidator(value);
                           },
-                          onFieldSubmitted: (value) {
-                            _loginFct();
+                          onFieldSubmitted: (value) async {
+                            await loginFct(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
                           },
                         ),
                         const SizedBox(
-                          height: 16.0,
+                          height: 8.0,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
                               Navigator.pushNamed(
-                                  context, ForgotPasswordScreen.routeName);
+                                  context, ForgotPasswordView.routeName);
                             },
-                            child: const Text(
+                            child: Text(
                               "Forgot password?",
+                              style: AppStyles.styleRegular16.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(
                           height: 16.0,
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(12),
-                              // backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                              ),
-                            ),
-                            icon: const Icon(Icons.login),
-                            label: const Text(
-                              "Login",
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                            onPressed: () async {
-                              _loginFct();
-                            },
-                          ),
+                        CustomBotton(
+                          onPressed: () async {
+                            await loginFct(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                          },
+                          text: 'Sign In',
                         ),
                         const SizedBox(
                           height: 16.0,
                         ),
-                        Text(
-                          "OR connect using".toUpperCase(),
-                        ),
+                        const DontHaveAnAccountWidget(),
                         const SizedBox(
                           height: 16.0,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: kBottomNavigationBarHeight + 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const Expanded(
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: kBottomNavigationBarHeight,
-                                    child: FittedBox(
-                                      child: GoogleButton(),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: SizedBox(
-                                    height: kBottomNavigationBarHeight,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.all(12),
-                                        // backgroundColor:
-                                        // Theme.of(context).colorScheme.background,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "Guest",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        Navigator.pushReplacementNamed(
-                                            context, NavBar.routeName);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        const OrDivider(),
                         const SizedBox(
                           height: 16.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't have an account?",
-                            ),
-                            TextButton(
-                              child: const Text(
-                                "Register",
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, RegisterScreen.routeName);
-                              },
-                            ),
-                          ],
+                        const SizedBox(child: GoogleButton()),
+                        const SizedBox(
+                          height: 16.0,
                         ),
+                        SocialLoginButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, NavBar.routeName);
+                          },
+                          image: Assets.users_imagesGuest,
+                          tital: 'Sign in as Guest',
+                        )
                       ],
                     ),
                   ),
