@@ -264,7 +264,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             if (user == null)
               const Padding(
                 padding: EdgeInsets.all(20.0),
@@ -280,45 +279,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       uid: user!.uid,
                     ),
                   ),
-                  // Container(
-                  //   height: 60,
-                  //   width: 60,
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //     color: Theme.of(context).cardColor,
-                  //     border: Border.all(width: 3),
-                  //     image: DecorationImage(
-                  //       image: NetworkImage(userModelProvider!.userImage),
-                  //       fit: BoxFit.fill,
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(width: 7),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     Text(userModelProvider!.userName),
-                  //     Text(userModelProvider!.userEmail),
-                  //     TextButton(
-                  //       onPressed: () async {
-                  //         final result = await Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (context) => EditUserInfoView(
-                  //               uid: user!.uid,
-                  //               userModelProvider: userModelProvider!,
-                  //               onUserInfoUpdated: fetchUserInfo,
-                  //             ),
-                  //           ),
-                  //         );
-                  //         if (result == true) {
-                  //           fetchUserInfo(); // Refresh after editing
-                  //         }
-                  //       },
-                  //       child: const Text("Edit"),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             const SizedBox(height: 16),
