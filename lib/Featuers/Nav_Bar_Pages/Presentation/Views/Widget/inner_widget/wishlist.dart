@@ -44,7 +44,8 @@ class Wishlist extends StatelessWidget {
                       context: context,
                       text: 'Remove all items ?',
                       function: () {
-                        wishlistProvider.clearLocalWishlist();
+                        wishlistProvider.clearWishlistFromFirebase();
+                        // wishlistProvider.clearLocalWishlist();
                       },
                     );
                   },
